@@ -1,0 +1,12 @@
+[
+  {
+    "id": "cps-plugins",
+    "caption": "CPS-Plugins",
+    "children": [
+      {
+        "caption": "Testt Update Channel 【更新channel_v3文件】",
+        "command": "cps_update_channel",
+      }
+    ]
+  }
+]

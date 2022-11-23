@@ -1,0 +1,6 @@
+[
+  {
+    "keys": ["alt+u"],
+    "command": "cps_update_channel"
+  }
+]
