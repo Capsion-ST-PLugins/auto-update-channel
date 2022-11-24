@@ -19,7 +19,6 @@ from .core import utils
 from .core import download_channel_by_url
 
 
-PLUGIN_NAME = "cps_autopdate_channel_v3"
 SETTING_FILE = "cps.sublime-settings"
 SETTING_KEY = "auto_update_channel"
 SETTINGS = {}
@@ -27,22 +26,6 @@ SETTINGS = {}
 OUTPUT_CHANNEL_V3_PATH = os.path.join(
     sublime.packages_path(), "User", "channel_v3.json"
 )
-
-
-def get_floder_list() -> dict:
-    return {
-        "package_path": os.path.join(sublime.packages_path(), PLUGIN_NAME),
-        "user_path": os.path.join(sublime.packages_path(), "User"),
-        "channel_v3_file": os.path.join(
-            sublime.packages_path(), PLUGIN_NAME, "channel_v3.json"
-        ),
-        "default_settings": os.path.join(
-            sublime.packages_path(), PLUGIN_NAME, ".sublime", SETTING_FILE
-        ),
-        "package_settings": os.path.join(
-            sublime.packages_path(), "User", "Package Control.sublime-settings"
-        ),
-    }
 
 
 def get_settings() -> dict:

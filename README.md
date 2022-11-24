@@ -14,7 +14,8 @@ sublimeText每次打开插件市场都要重新下载channel_v3.json文件，这
 
 
 
-# 起因
+# 告别
+![2](screenshot/2.png)
 
 全世界都知道sublimetext国内访问插件市场时，有一些地区基本时连不上的，因为sublimetext每次搜索插件，安装插件前都会访问一次`https://packagecontrol.io/channel_v3.json`，下载`channel_v3.json`文件。
 
@@ -32,8 +33,7 @@ sublimeText每次打开插件市场都要重新下载channel_v3.json文件，这
 - 自动更新文件路径到`Package Control.sublime-settings`的`"channels"`字段中
 
 使用演示：
-
-![step1](screenshot/1.gif)
+![1](screenshot/1.gif)
 
 
 
