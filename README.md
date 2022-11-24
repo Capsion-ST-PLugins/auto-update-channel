@@ -33,7 +33,7 @@ sublimeText每次打开插件市场都要重新下载channel_v3.json文件，这
 
 使用演示：
 
-![step1](1.gif)
+![step1](screenshot/1.gif)
 
 
 
