@@ -47,7 +47,7 @@ sublimeText每次打开插件市场都要重新下载channel_v3.json文件，这
         "enable":true,        // 插件开关
         "auto_update": true,  // 是否更新
         "update_interval": 7, // 多少天更新一次
-      }
+    }
 }
 ```
 

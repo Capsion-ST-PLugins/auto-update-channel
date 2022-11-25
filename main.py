@@ -28,24 +28,62 @@ OUTPUT_CHANNEL_V3_PATH = os.path.join(
 )
 
 
-def get_settings() -> dict:
-    global SETTING_FILE, SETTING_KEY
-    return sublime.load_settings(SETTING_FILE).get(SETTING_KEY, {})
-
-
 def plugin_loaded():
-    global SETTING_FILE, SETTINGS
+    global SETTING_FILE, SETTINGS, SETTING_KEY
 
     # 在另一个进程执行该函数( 这样不会阻塞窗口的初始化，造成载入文件卡顿 )
-    SETTINGS = get_settings()
-    if SETTINGS.get("enable"):
+    SETTINGS = SettingManager(SETTING_KEY, SETTING_FILE)
+    if SETTINGS.get("enable", None):
         sublime.set_timeout_async(check_package_control_channel, 1)
 
 
-def check_update():
-    global SETTING_FILE, OUTPUT_CHANNEL_V3_PATH
+class SettingManager:
+    def __init__(self, setting_key: str, default_settings: str):
+        self.setting_key = setting_key
+        self.default_settings = default_settings
+        self.default_settings_path = os.path.join(
+            sublime.packages_path(), "cps-plugins", ".sublime", default_settings
+        )
 
-    SETTINGS = get_settings()
+        self.data = {}
+
+        sublime.set_timeout_async(self.plugin_loaded_async)
+
+    def __getitem__(self, key: str, default={}):
+        if key in self.data:
+            return self.data.get(key, default)
+        else:
+            return {}
+
+    def get(self, key: str, default={}):
+        return self.__getitem__(key, default)
+
+    def plugin_loaded_async(self):
+        """
+        @Description 监听用户配置文件
+        """
+        with open(self.default_settings_path, "r", encoding="utf8") as f:
+            self.data = sublime.decode_value(f.read()).get(self.setting_key, {})
+
+        # 读取现有配置
+        user_settings = sublime.load_settings(self.default_settings)
+        # 添加配置更新事件
+        user_settings.add_on_change(self.default_settings, self._on_settings_change)
+        # 将最新的配置更新到内部的data，最终以data为准
+        utils.recursive_update(self.data, user_settings.to_dict()[self.setting_key])
+
+    def _on_settings_change(self):
+        new_settings = sublime.load_settings(self.default_settings).get(
+            self.setting_key, {}
+        )
+
+        utils.recursive_update(self.data, new_settings)
+
+        return self
+
+
+def check_update():
+    global SETTING_FILE, OUTPUT_CHANNEL_V3_PATH, SETTINGS
     if not SETTINGS.get("auto_update", False):
         return
 
@@ -130,4 +168,5 @@ def create_settings_file(file_name: str, channel_v3_parh: str):
 
 class CpsUpdateChannelCommand(sublime_plugin.TextCommand):
     def run(self, view) -> None:
+        # 后台执行
         sublime.set_timeout_async(check_package_control_channel, 1)
